@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ChatPlugin</title>
+  <link rel="stylesheet" type="text/css" href="chat.css">
+  <script>
+    window.onload = function () {
+      const btnSend = document.querySelector('.input-container button');
+      const input = document.querySelector('.input-container input');
+      const chatContainer = document.querySelector('.chat-container');
+
+      btnSend.addEventListener('click', function () {
+        const message = input.value;
+        input.value = '';
+        
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message');
+        messageElement.innerHTML =  `<p class="message-content">${message}</p>`;
+        chatContainer.appendChild(messageElement);
+
+        fetch('/api/generate-text', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ prompt: message, maxTokens: 60 })
+        })
+          .then(response => response.json())
+          .then(data => {
+            const responseElement = document.createElement('div');
+            responseElement.classList.add('chat-message');
+            responseElement.innerHTML = `<p class="message-content">${data.choices[0].message.content}</p>`;
+            chatContainer.appendChild(responseElement);
+          });
+      });
+    };  
+  </script>
+</head>
+
+<body>
+  <header>
+    <div class="header-content">
+      <h2>ChatPlugin</h2>
+    </div>
+  </header>
+
+  <main>
+    <div class="chat-container">
+      <div class="chat-message">
+        <p class="message-content">Hello, how are you?</p>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <input type="text" placeholder="Type your message..." />
+      <button>Send</button>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2024 ChatPlugin</p>
+    </div>
+  </footer>
+</body>
+
+</html>
