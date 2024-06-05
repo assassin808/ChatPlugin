@@ -35,7 +35,8 @@ router.post('/generate-text', async (req, res) => {
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'api-key': `${process.env.AZURE_API_KEY}` 
+                'Authorization': 'Bearer ' + `${process.env.AZURE_API_KEY}`
+                // 'api-key': `${process.env.AZURE_API_KEY}`
             }
         }); 
     res.json(gptResponse.data);
