@@ -3,7 +3,7 @@ const problematicWords = {
   "teh": "the",
   "adn": "and",
   "recieve": "receive",
-  "test": "test!!!!!!"
+  "test": "TESTFUCK!!!!",
   // Add more problematic words and suggestions here
 };
 
@@ -37,12 +37,6 @@ document.addEventListener('mouseout', function(event) {
   }
 });
 
-document.addEventListener('mouseover', function(event) {
-  if (event.target.classList.contains('tooltip')) {
-    showTooltip(event.target.relatedTarget);
-  }
-});
-
 function showTooltip(element) {
   let tooltip = document.querySelector('.tooltip');
   if (!tooltip) {
@@ -63,6 +57,10 @@ function showTooltip(element) {
   tooltip.addEventListener('mouseout', function() {
     hideTooltip();
   });
+
+  tooltip.addEventListener('click', function() {
+    replaceWord(element, tooltip.textContent);
+  });
 }
 
 function hideTooltip() {
@@ -70,6 +68,11 @@ function hideTooltip() {
   if (tooltip) {
     tooltip.style.display = 'none';
   }
+}
+
+function replaceWord(element, suggestion) {
+  element.outerHTML = suggestion;
+  hideTooltip();
 }
 
 function placeCaretAtEnd(el) {
