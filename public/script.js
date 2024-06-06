@@ -11,6 +11,21 @@ const problematicWords = {
   // Add more problematic words and suggestions here
 };
 
+const predefinedDialogue = [
+  { speaker: "User1", message: "Hi! As the CEO of TechNova, I'm excited about the potential partnership between our firms. With our upcoming AI-driven language translation software and your vast customer base, I believe we could create a strong market presence." },
+  { speaker: "User2", message: "That sounds promising, but let's be quick. I've got a tight schedule today." },
+  { speaker: "User1", message: "Sure, let's dive in. We propose integrating our AI translation software into your existing language learning platform. We're suggesting a revenue split on the basis of our inputs. We propose a 60/40 split on sales of the new integrated product, with us taking the larger share. This takes into account the substantial R&D costs we've incurred developing the AI software." },
+  { speaker: "User2", message: "Hold on, 60/40? We're providing the platform and access to our dedicated customer base, along with our marketing efforts. We won't settle for less than 70%." },
+  { speaker: "User1", message: "I understand your viewpoint, but 70% seems high given our significant investment in software development. How about we meet halfway with a 50/50 split? This would more accurately represent our joint input and shared risk in this venture." },
+  { speaker: "User2", message: "You drive a hard bargain! Ok fine, 50/50 it is. But we need to maintain transparency and fairness moving forward." },
+  { speaker: "User1", message: "Absolutely, transparency is key. Now, about the project timeline..." },
+  { speaker: "User2", message: "Timeline? I thought we were rolling out tomorrow!" },
+  { speaker: "User1", message: "Tomorrow? That's a bit premature. We were considering a three-month ramp-up period to ensure a seamless integration of our software into your platform and to iron out any potential customer pain points." },
+  { speaker: "User2", message: "Three-month ramp-up? This is the first time I'm hearing of this. Are you just trying to delay?" },
+  { speaker: "User1", message: "Maybe we should take a short break and continue this discussion when we're both a bit more relaxed?" },
+  { speaker: "User2", message: "Fine, I'm logging off for now. This is turning out to be quite complex." }
+];
+
 chatInput.addEventListener('input', handleInput);
 sendButton.addEventListener('click', sendMessage);
 
@@ -104,3 +119,15 @@ function sendMessage() {
     chatHistory.scrollTop = chatHistory.scrollHeight;
   }
 }
+
+function initializeChatHistory(dialogue) {
+  dialogue.forEach(entry => {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('chat-message');
+    messageElement.innerHTML = `<strong>${entry.speaker}:</strong> ${highlightProblematicWords(entry.message)}`;
+    chatHistory.appendChild(messageElement);
+  });
+  chatHistory.scrollTop = chatHistory.scrollHeight;
+}
+
+initializeChatHistory(predefinedDialogue);
