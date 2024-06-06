@@ -60,3 +60,21 @@ body {
   border-radius: 5px;
   display: none;
 }
+
+.autocomplete-suggestions {
+  position: absolute;
+  border: 1px solid #ccc;
+  background: #fff;
+  max-height: 150px;
+  overflow-y: auto;
+  display: none;
+}
+
+.suggestion {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  background: #eee;
+}

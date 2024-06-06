@@ -26,14 +26,21 @@ const predefinedDialogue = [
   { speaker: "User2", message: "Fine, I'm logging off for now. This is turning out to be quite complex." }
 ];
 
+let autocompleteTimeout;
+
 chatInput.addEventListener('input', handleInput);
 sendButton.addEventListener('click', sendMessage);
 
 function handleInput() {
+  clearTimeout(autocompleteTimeout);
   const message = chatInput.innerText;
   const highlightedMessage = highlightProblematicWords(message);
   chatInput.innerHTML = highlightedMessage;
   placeCaretAtEnd(chatInput);
+
+  autocompleteTimeout = setTimeout(() => {
+    showAutocompleteSuggestions(message);
+  }, 1000); // 1 second delay
 }
 
 function highlightProblematicWords(message) {
@@ -43,6 +50,29 @@ function highlightProblematicWords(message) {
     highlightedMessage = highlightedMessage.replace(regex, `<span class="problematic" data-suggestion="${problematicWords[word]}">$1</span>`);
   }
   return highlightedMessage;
+}
+
+function showAutocompleteSuggestions(inputText) {
+  const words = inputText.split(' ');
+  if (words.length === 0) return;
+
+  const lastWord = words[words.length - 1].toLowerCase();
+  let suggestion = '';
+
+  predefinedDialogue.forEach(entry => {
+    const messageWords = entry.message.split(' ');
+    messageWords.forEach((word, index) => {
+      if (word.toLowerCase().startsWith(lastWord) && lastWord !== '') {
+        suggestion = messageWords.slice(index, index + 3).join(' '); // Suggest next 3 words
+        return;
+      }
+    });
+  });
+
+  if (suggestion) {
+    chatInput.innerHTML = inputText + `<span style="color: gray;"> ${suggestion}</span>`;
+    placeCaretAtEnd(chatInput, true);
+  }
 }
 
 document.addEventListener('mouseover', function(event) {
@@ -95,12 +125,16 @@ function replaceWord(element, suggestion) {
   hideTooltip();
 }
 
-function placeCaretAtEnd(el) {
+function placeCaretAtEnd(el, withSuggestion = false) {
   el.focus();
   if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
     const range = document.createRange();
     range.selectNodeContents(el);
-    range.collapse(false);
+    if (withSuggestion) {
+      range.setStart(el.childNodes[0], el.childNodes[0].length - suggestion.length);
+    } else {
+      range.collapse(false);
+    }
     const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
@@ -117,17 +151,26 @@ function sendMessage() {
     chatHistory.appendChild(messageElement);
     chatInput.innerHTML = '';
     chatHistory.scrollTop = chatHistory.scrollHeight;
+    simulateUser2Response();
   }
 }
 
+function simulateUser2Response() {
+  setTimeout(() => {
+    const response = predefinedDialogue.find(dialogue => dialogue.speaker === "User2");
+    if (response) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('chat-message');
+      messageElement.innerHTML = `<strong>User2:</strong> ${highlightProblematicWords(response.message)}`;
+      chatHistory.appendChild(messageElement);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+  }, 2000); // 2 seconds delay
+}
+
 function initializeChatHistory(dialogue) {
-  dialogue.forEach(entry => {
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('chat-message');
-    messageElement.innerHTML = `<strong>${entry.speaker}:</strong> ${highlightProblematicWords(entry.message)}`;
-    chatHistory.appendChild(messageElement);
-  });
-  chatHistory.scrollTop = chatHistory.scrollHeight;
+  // Hide chat history for now
+  chatHistory.style.display = 'none';
 }
 
 initializeChatHistory(predefinedDialogue);
