@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../styles.css">
+  <title>Chat Application with Suggestions</title>
+  <style>
+    .highlight {
+      background-color: rgba(255, 0, 0, 0.3);
+    }
+
+    /* Style for comment box */
+    .comment {
+      position: fixed;
+      left: 230px; /* Adjust based on the required position */
+      width: 280px;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      
+      /* Background and border styles */
+      background-color: #f8f8ff;
+      border: 1px solid #b3b3cc;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      
+      /* Font styles */
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    
+    
+    
+  
+  .comment:first-child {  
+    top: 30px;  
+  }  
+    
+  .comment:nth-child(3) {  
+    top: 130px;  
+  }  
+
+  .comment:nth-child(4) {  
+    top: 150px;  
+  }
+  .comment:nth-child(5) {  
+    top: 270px;  
+  }
+  .comment:nth-child(6) {  
+    top: 250px;  
+  }
+  .comment:nth-child(7) {  
+    top: 385px;  
+  }
+  .comment:nth-child(8) {  
+    top: 350px;  
+  }
+  .comment:nth-child(9) {  
+    top: 450px;  
+  }
+  .comment:nth-child(10) {  
+    top: 450px;  
+  } 
+  .comment:nth-child(11) {  
+    top: 540px;  
+  }
+
+  </style>
+</head>
+
+<body>
+  <div class="chat-container">
+    <div class="chat-history">
+      <div class="comment">User1 opens with a very long-winded statement instead of getting straight to the point, which
+        could come across as inconsiderate of User2's mentioned tight schedule.</div>
+      <div class="chat-message User1"><strong>User1:</strong> <span class="highlight"
+          data-suggestion="As the CEO of TechNova, I'm excited about the potential partnership between our frims. With our upcoming AI-driven language translation software and your vast customer base, I believe we could create a strong market presence.">Hi!
+          As the CEO of TechNova, I'm quite excited about the potential of partnering our <span class="problematic"
+            data-suggestion="firms">frims</span>...</span></div>
+      <div class="comment">User2's response of "Hold on, 60/40? We're providing the platform and access to our dedicated
+        customer base, along with our marketing efforts. We won't settle for less than 70%." is quite abrupt and
+        confrontational.</div>
+      <div class="chat-message User2"><strong>User2:</strong> <span class="highlight"
+          data-suggestion="We're providing the platform and access to our dedicated customer base. We believe a 70% share would be fair.">Hold
+          on, 60/40? We're providing the platform and access to our dedicated customer base, along with our marketing
+          efforts. </span>We won't <span class="problematic" data-suggestion="settle">settel</span> for less than 70%.
+      </div>
+      <div class="comment">User1's statement "You drive a hard bargain!" could be seen as slightly condescending or
+        patronizing. AND Ok fine fine fine</div>
+      <div class="chat-message User1"><strong>User1:</strong> <span class="highlight"
+          data-suggestion="You make a strong argument! Let's go with a 50/50 split.">You drive a hard bargain! Ok fine
+          fine fine, 50/50 it is.</span> But we need to maintain <span class="problematic"
+          data-suggestion="transparency">transparancy</span> and fairness moving forward.</div>
+      <div class="comment">User2's reaction of "Timeline? I thought we were rolling out tomorrow!" suggests a lack of
+        proper communication and alignment between the parties.</div>
+      <div class="chat-message User2"><strong>User2:</strong> <span class="highlight"
+          data-suggestion="About the timeline, I was under the impression that we were starting tomorrow.">Timeline? I
+          thought we were rolling out tomorrow!</span></div>
+      <div class="comment">User2's accusation "Are you just trying to delay?" implies a lack of trust and goodwill.
+      </div>
+      <div class="chat-message User2"><strong>User2:</strong> <span class="highlight"
+          data-suggestion="Is there a reason for the proposed three-month ramp-up?">Three-month ramp-up? This is the
+          first time I'm hearing of this. Are you just trying to delay?</span></div>
+      <div class="comment">User1's suggestion to "take a short break" could be interpreted as an attempt to avoid or
+        deflect from the concerns raised, rather than addressing them directly.</div>
+      <div class="chat-message User1"><strong>User1:</strong> <span class="highlight"
+          data-suggestion="Let's take a moment to regroup and address the concerns raised.">Maybe we should take a short
+          break and continue this discussion when we're both a bit more relaxed?</span></div>
+    </div>
+  </div>
+  <a href="/demo" class="next-page-button">Demo</a>
+  <div class="chat-history"></div>
+  <div class="chat-input" style="display: none;"></div>
+  <button class="send-button" style="display: none;">Send</button>
+  <script src="../script.js"></script>
+  <script>
+    const highlightedElements = document.querySelectorAll('.highlight');
+
+    highlightedElements.forEach(element => {
+      let suggestionBox;
+
+      element.addEventListener('mouseenter', function () {
+        const suggestion = this.getAttribute('data-suggestion');
+        suggestionBox = document.createElement('div');
+        suggestionBox.textContent = suggestion;
+        suggestionBox.style.position = 'fixed';
+        suggestionBox.style.backgroundColor = '#fff';
+        suggestionBox.style.border = '1px solid #000';
+        suggestionBox.style.padding = '5px';
+        suggestionBox.style.borderRadius = '5px';
+        suggestionBox.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)';
+        this.appendChild(suggestionBox);
+      });
+
+      element.addEventListener('mouseleave', function () {
+        if (suggestionBox) {
+          setTimeout(() => {
+            if (!suggestionBox.matches(':hover')) {
+              this.removeChild(suggestionBox);
+            }
+          }, 100); // 500ms delay  
+        }
+      });  
+
+
+      element.addEventListener('click', function () {
+        if (suggestionBox) {
+          this.textContent = suggestionBox.textContent;
+          this.style.backgroundColor = 'transparent';
+          this.removeChild(suggestionBox);
+        }
+      });
+    });  
+  </script>
+  
+</body>
+
+</html>
