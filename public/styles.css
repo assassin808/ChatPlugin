@@ -7,11 +7,11 @@ body {
   margin: 0 auto;
   border: 1px solid #ccc;
   padding: 10px;
-  overflow-y: auto;
+  max-height: 700px;
 }
 
 .chat-history {
-  max-height: 600px;
+  max-height: 700px;
   overflow-y: auto;
   border-bottom: 1px solid #ccc;
   margin-bottom: 10px;
@@ -85,4 +85,18 @@ body {
 
 .speaker-select {
   display: none;
+}
+
+
+.next-page-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
 }

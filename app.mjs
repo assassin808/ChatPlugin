@@ -17,6 +17,14 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/', (req, res) => {  
   res.sendFile(path.join(__dirname, 'public', 'index.html'));  
 });  
+
+app.get('/diag', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'diag', 'diagnosis.html'));
+});
+
+app.get('/demo', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'demo', 'demo.html'));
+});
   
 const router = express.Router();  
 
