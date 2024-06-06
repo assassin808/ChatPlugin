@@ -1,4 +1,8 @@
 const chatInput = document.querySelector('.chat-input');
+const sendButton = document.querySelector('.send-button');
+const chatHistory = document.querySelector('.chat-history');
+const speakerSelect = document.querySelector('.speaker-select');
+
 const problematicWords = {
   "teh": "the",
   "adn": "and",
@@ -8,6 +12,7 @@ const problematicWords = {
 };
 
 chatInput.addEventListener('input', handleInput);
+sendButton.addEventListener('click', sendMessage);
 
 function handleInput() {
   const message = chatInput.innerText;
@@ -84,5 +89,18 @@ function placeCaretAtEnd(el) {
     const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
+  }
+}
+
+function sendMessage() {
+  const message = chatInput.innerText;
+  const speaker = speakerSelect.value;
+  if (message.trim() !== '') {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('chat-message');
+    messageElement.innerHTML = `<strong>${speaker}:</strong> ${highlightProblematicWords(message)}`;
+    chatHistory.appendChild(messageElement);
+    chatInput.innerHTML = '';
+    chatHistory.scrollTop = chatHistory.scrollHeight;
   }
 }
