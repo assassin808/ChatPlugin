@@ -48,6 +48,7 @@ body {
 
 .chat-message {
   margin-bottom: 10px;
+  height: auto;
 }
 
 .problematic {
@@ -69,6 +70,7 @@ body {
   margin: 5px;
   border-radius: 10px;
   max-width: 80%;
+  word-break: normal
 }
 
 .User2 {

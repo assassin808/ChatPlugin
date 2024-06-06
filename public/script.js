@@ -8,11 +8,12 @@ const problematicWords = {
   "adn": "and",
   "recieve": "receive",
   "test": "TESTFUCK!!!!",
+  "frims":"firms",
   // Add more problematic words and suggestions here
 };
 
 const predefinedDialogue = [
-  { speaker: "User1", message: "Hi! As the CEO of TechNova, I'm excited about the potential partnership between our firms. With our upcoming AI-driven language translation software and your vast customer base, I believe we could create a strong market presence." },
+  { speaker: "User1", message: "teh adn recieve Hi! As the CEO of TechNova, I'm excited about the potential partnership between our frims. With our upcoming AI-driven language translation software and your vast customer base, I believe we could create a strong market presence." },
   { speaker: "User2", message: "That sounds promising, but let's be quick. I've got a tight schedule today." },
   { speaker: "User1", message: "Sure, let's dive in. We propose integrating our AI translation software into your existing language learning platform. We're suggesting a revenue split on the basis of our inputs. We propose a 60/40 split on sales of the new integrated product, with us taking the larger share. This takes into account the substantial R&D costs we've incurred developing the AI software." },
   { speaker: "User2", message: "Hold on, 60/40? We're providing the platform and access to our dedicated customer base, along with our marketing efforts. We won't settle for less than 70%." },
@@ -25,6 +26,7 @@ const predefinedDialogue = [
   { speaker: "User1", message: "Maybe we should take a short break and continue this discussion when we're both a bit more relaxed?" },
   { speaker: "User2", message: "Fine, I'm logging off for now. This is turning out to be quite complex." }
 ];
+
 
 chatInput.addEventListener('input', handleInput);
 sendButton.addEventListener('click', sendMessage);
@@ -98,6 +100,7 @@ function hideTooltip() {
 
 function replaceWord(element, suggestion) {
   element.outerHTML = suggestion;
+  element.innerHTML = suggestion;
   hideTooltip();
 }
 
@@ -171,24 +174,29 @@ function sendUser2Message() {
 }  
 
 
-function autoTypeUser1Input(text, callback) {
-  chatInput.innerHTML = ''; // Clear the input box
-  let index = 0;
-  console.log(text);
+function autoTypeUser1Input(text, callback) {  
+  chatInput.innerHTML = ''; // Clear the input box  
+  let index = 0;  
+  console.log(text);  
+  const event = new Event('input');  
+  function typeNextCharacter() {  
+    if (index < text.length) {  
+      chatInput.innerHTML += text.charAt(index) === ' ' ? '<pre> </pre>' : text.charAt(index);  
 
-  function typeNextCharacter() {
-    if (index < text.length) {
-      chatInput.innerHTML += text.charAt(index);
-      // placeCaretAtEnd(chatInput);
-      index++;
-      setTimeout(typeNextCharacter, 20); // Adjust typing speed here (100ms per character)
-    } else {
-      if (callback) callback(); // Execute the callback function after typing is done
-    }
-  }
+      chatInput.dispatchEvent(event);  
+      placeCaretAtEnd(chatInput);  
+      index++;  
+      setTimeout(typeNextCharacter, 5); // Adjust typing speed here (100ms per character)  
+    } else {  
+      if (callback){
+        //wait 2s
+        setTimeout(callback, 5000);
+      }
+    }  
+  }  
+  typeNextCharacter();  
+}  
 
-  typeNextCharacter();
-}
 
 function pressEnterKey() {
   const event = new KeyboardEvent('keydown', {
@@ -199,6 +207,7 @@ function pressEnterKey() {
     bubbles: true
   });
   chatInput.dispatchEvent(event);
+
 }
 
 function sendUser1Message() {
