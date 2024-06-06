@@ -28,6 +28,12 @@ const predefinedDialogue = [
 
 chatInput.addEventListener('input', handleInput);
 sendButton.addEventListener('click', sendMessage);
+//enter key
+chatInput.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    sendMessage();
+  }
+});
 
 function handleInput() {
   const message = chatInput.innerText;
@@ -133,8 +139,10 @@ function initializeChatHistory(dialogue) {
 // initializeChatHistory(predefinedDialogue);
 
 const predefinedDialogueUser2=predefinedDialogue.filter((item)=>item.speaker==="User2");
+const predefinedDialogueUser1=predefinedDialogue.filter((item)=>item.speaker==="User1");
 
 let user2Iterator = predefinedDialogueUser2[Symbol.iterator]();  
+let user1Iterator = predefinedDialogueUser1[Symbol.iterator]();
   
 function sendMessage() {  
   const message = chatInput.innerText;  
@@ -148,6 +156,7 @@ function sendMessage() {
     chatHistory.scrollTop = chatHistory.scrollHeight;  
   }  
   setTimeout(sendUser2Message, 2000); // Delay User2's message by 2 seconds  
+  setTimeout(sendUser1Message, 4000); // Delay User1's message by 4 seconds
 }  
   
 function sendUser2Message() {  
@@ -160,3 +169,45 @@ function sendUser2Message() {
     chatHistory.scrollTop = chatHistory.scrollHeight;  
   }  
 }  
+
+
+function autoTypeUser1Input(text, callback) {
+  chatInput.innerHTML = ''; // Clear the input box
+  let index = 0;
+  console.log(text);
+
+  function typeNextCharacter() {
+    if (index < text.length) {
+      chatInput.innerHTML += text.charAt(index);
+      // placeCaretAtEnd(chatInput);
+      index++;
+      setTimeout(typeNextCharacter, 20); // Adjust typing speed here (100ms per character)
+    } else {
+      if (callback) callback(); // Execute the callback function after typing is done
+    }
+  }
+
+  typeNextCharacter();
+}
+
+function pressEnterKey() {
+  const event = new KeyboardEvent('keydown', {
+    key: 'Enter',
+    code: 'Enter',
+    which: 13,
+    keyCode: 13,
+    bubbles: true
+  });
+  chatInput.dispatchEvent(event);
+}
+
+function sendUser1Message() {
+  const nextMessage = user1Iterator.next();
+  if (!nextMessage.done) {
+    autoTypeUser1Input(nextMessage.value.message, pressEnterKey);
+  }
+}
+
+sendUser1Message()
+
+
