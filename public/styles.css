@@ -15,6 +15,8 @@ body {
   border-bottom: 1px solid #ccc;
   margin-bottom: 10px;
   padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .speaker-select {
@@ -58,5 +60,27 @@ body {
   color: white;
   padding: 5px;
   border-radius: 5px;
+  display: none;
+}
+
+
+.chat-message {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.User2 {
+  align-self: flex-start;
+  background-color: #e6e6e6;
+}
+
+.User1 {
+  align-self: flex-end;
+  background-color: #cce5ff;
+}
+
+.speaker-select {
   display: none;
 }

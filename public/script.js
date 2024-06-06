@@ -130,4 +130,33 @@ function initializeChatHistory(dialogue) {
   chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
-initializeChatHistory(predefinedDialogue);
+// initializeChatHistory(predefinedDialogue);
+
+const predefinedDialogueUser2=predefinedDialogue.filter((item)=>item.speaker==="User2");
+
+let user2Iterator = predefinedDialogueUser2[Symbol.iterator]();  
+  
+function sendMessage() {  
+  const message = chatInput.innerText;  
+  const speaker = speakerSelect.value;  
+  if (message.trim() !== '') {  
+    const messageElement = document.createElement('div');  
+    messageElement.classList.add('chat-message', speaker);  
+    messageElement.innerHTML = `<strong>${speaker}:</strong> ${highlightProblematicWords(message)}`;  
+    chatHistory.appendChild(messageElement);  
+    chatInput.innerHTML = '';  
+    chatHistory.scrollTop = chatHistory.scrollHeight;  
+  }  
+  setTimeout(sendUser2Message, 2000); // Delay User2's message by 2 seconds  
+}  
+  
+function sendUser2Message() {  
+  const nextMessage = user2Iterator.next();  
+  if (!nextMessage.done) {  
+    const messageElement = document.createElement('div');  
+    messageElement.classList.add('chat-message', nextMessage.value.speaker);  
+    messageElement.innerHTML = `<strong>${nextMessage.value.speaker}:</strong> ${highlightProblematicWords(nextMessage.value.message)}`;  
+    chatHistory.appendChild(messageElement);  
+    chatHistory.scrollTop = chatHistory.scrollHeight;  
+  }  
+}  
