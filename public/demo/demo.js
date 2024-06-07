@@ -31,7 +31,7 @@ const predefinedDialogue = [
   { speaker: "User2", message: "That timeline sounds more doable. This discussion has taken a turn for the better. Let's reconnect soon to iron out the finer details." },
   { speaker: "User1", message: "Absolutely, I'm glad we could find a potential path forward. Looking forward to our next discussion." }
 ];
-const improperWords = {};
+const improperPhrase = {};
 
 
 chatInput.addEventListener('input', handleInput);
@@ -49,6 +49,46 @@ chatInput.addEventListener('keydown', function(event) {
   }
 });
 
+chatInput.addEventListener('keydown', function(event) {
+  if (event.shiftKey && event.key === 'ArrowDown') {
+    event.preventDefault();
+    topicExpand();
+  }
+});
+
+chatInput.addEventListener('keydown', function(event) {
+  if (event.shiftKey && event.key === 'ArrowUp') {
+    event.preventDefault();
+    //hide help
+    const helpBox = document.querySelector('.help-box');
+    const suggestions = document.querySelector('.suggestions');
+    if (helpBox) {
+      helpBox.remove();
+    }
+    if (suggestions) {
+      suggestions.remove();
+    }
+  }
+});
+
+chatInput.addEventListener('keydown', function(event) {
+  if (event.shiftKey && event.key === 'ArrowLeft') {
+    event.preventDefault();
+    //show problematic in light red
+    let value = chatInput.innerText;
+    chatInput.innerHTML = '';
+
+    // Create the span element
+    const span = document.createElement('span');
+    span.className = 'highlight';
+    span.setAttribute('data-suggestion', 'xxxx');
+    span.textContent = value;
+
+    // Insert the span element back into the input field
+    chatInput.appendChild(span);
+  }
+});
+
 
 
 chatInput.addEventListener('keydown', function(event) {
@@ -57,6 +97,26 @@ chatInput.addEventListener('keydown', function(event) {
     gray2black();
   }
 });
+
+function topicExpand() {
+            const helpBox = document.createElement('div');
+            helpBox.className = 'help-box';
+            helpBox.textContent = 'Need help?';
+
+            const suggestions = document.createElement('div');
+            suggestions.className = 'suggestions';
+            suggestions.innerHTML = `
+                <ul>
+                    <li>Stick to the split</li>
+                    <li>by proposing some new ideas</li>
+                    <li>e.g. a potential new niche market</li>
+                    <li>and emphasize the value of your AI software</li>
+                </ul>
+            `;
+
+            chatInput.appendChild(helpBox);
+            chatInput.appendChild(suggestions);
+}
 
 function gray2black(){
   const spans = document.querySelectorAll('#grey');

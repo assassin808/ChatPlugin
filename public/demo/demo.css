@@ -1,0 +1,68 @@
+.help-box {
+  position: relative;
+  left: -150px;
+  bottom: 110px;
+  padding: 5px 10px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100px;
+}
+
+.suggestions {
+  display: none;
+  position: relative;
+  left: -300px;
+  bottom: 90px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 250px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions ul li {
+  margin-bottom: 5px;
+}
+
+.help-box:hover+.suggestions,
+.suggestions:hover {
+  display: block;
+}
+
+#demo {
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.highlight {
+  background-color: rgba(255, 0, 0, 0.3);
+}
+
+/* Style for comment box */
+.comment {
+  position: fixed;
+  left: 230px;
+  /* Adjust based on the required position */
+  width: 280px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 12px;
+
+  /* Background and border styles */
+  background-color: #f8f8ff;
+  border: 1px solid #b3b3cc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* Font styles */
+  font-family: Arial, sans-serif;
+  color: #333;
+}

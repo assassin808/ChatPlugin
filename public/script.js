@@ -193,6 +193,9 @@ function sendUser2Message() {
 }  
 
 
+
+
+
 function autoTypeUser1Input(text, callback) {  
   chatInput.innerHTML = ''; // Clear the input box  
   let index = 0;  
@@ -205,7 +208,7 @@ function autoTypeUser1Input(text, callback) {
       chatInput.dispatchEvent(event);  
       placeCaretAtEnd(chatInput);  
       index++;  
-      setTimeout(typeNextCharacter, 5); // Adjust typing speed here (100ms per character)  
+      setTimeout(typeNextCharacter, 0); // Adjust typing speed here (100ms per character)  
     } else {  
       if (callback){
         //wait 2s
