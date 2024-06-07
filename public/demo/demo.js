@@ -59,10 +59,12 @@ chatInput.addEventListener('keydown', function(event) {
 });
 
 function gray2black(){
-  const spans = document.querySelectorAll('span');
+  const spans = document.querySelectorAll('#grey');
+  //change this to normal text, removing the span
   spans.forEach(span => {
-    span.style.color = 'black';
+    span.outerHTML = span.textContent;
   });
+
 }
 
 
@@ -93,14 +95,24 @@ function showAutocompleteSuggestions(inputText) {
     const messageWords = entry.message.split(' ');
     messageWords.forEach((word, index) => {
       if (word.toLowerCase().startsWith(lastWord) && lastWord !== '') {
-        suggestion = messageWords.slice(index+1, index + 3).join(' '); // Suggest next 3 words
+        const suggestionWords = [];
+        for (let i = index + 1; i < messageWords.length; i++) {
+          if (messageWords[i].includes('.')) {
+            suggestionWords.push(messageWords[i]);
+            break;
+          } else {
+            suggestionWords.push(messageWords[i]);
+          }
+        }
+        suggestion = suggestionWords.join(' '); // Suggest words until the next "."
         return;
-      }
-    });
+    }
   });
+});
+
 
   if (suggestion) {
-    const suggestionText = chatInput.innerText + ` <span style="color: gray;">${suggestion}</span>`;
+    const suggestionText = chatInput.innerText + ` <span id="grey" style="color: gray;">${suggestion}</span>`;
     return suggestionText;
   }
   return '';
